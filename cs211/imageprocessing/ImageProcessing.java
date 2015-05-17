@@ -61,7 +61,6 @@ public PImage convolute(PImage arg) {
     }
   };
   float weight = 200.0f;
-  // create a greyscale image (type: ALPHA) for output
   PImage result = createImage(arg.width, arg.height, RGB);
 
   for (int y = 0; y < arg.height; y++) {
@@ -356,11 +355,6 @@ public PImage hough(PImage edgeImg, int nLines) {
       quads.add(oldquads.get(i));
     }
   }
-  
-  //println("Size : " + quads.size());
-  
-  
-
   for (int[] quad : quads) {
     PVector l1 = lines.get(quad[0]);
     PVector l2 = lines.get(quad[1]);
@@ -442,10 +436,6 @@ public void build(ArrayList<PVector> lines, int width, int height) {
     for (int j = i + 1; j < lines.size (); j++) {
       if (intersect(lines.get(i), lines.get(j), width, height)) {
 
-        // TODO
-        // fill the graph using intersect() to check if two lines are
-        // connected in the graph.
-        
         graph[idx][0] = i;
         graph[idx][1] = j;
 
@@ -494,7 +484,6 @@ public ArrayList<int[]> findCycles() {
     for (int i = 1; i < cy.length; i++) {
       s += "," + cy[i];
     }
-    System.out.println(s);
   }
   return cycles;
 }
@@ -655,11 +644,9 @@ public static boolean isConvex(PVector c1, PVector c2, PVector c3, PVector c4) {
   float i3=v43.cross(v14).z;
   float i4=v14.cross(v21).z;
 
-  if (   (i1>0 && i2>0 && i3>0 && i4>0) 
-    || (i1<0 && i2<0 && i3<0 && i4<0))
+  if ((i1>0 && i2>0 && i3>0 && i4>0) || (i1<0 && i2<0 && i3<0 && i4<0))
     return true;
-  else 
-    System.out.println("Eliminating non-convex quad");
+
   return false;
 }
 
@@ -679,13 +666,7 @@ public static boolean validArea(PVector c1, PVector c2, PVector c3, PVector c4, 
 
   float area = Math.abs(0.5f * (i1 + i2 + i3 + i4));
 
-  //System.out.println(area);
-
   boolean valid = (area < max_area && area > min_area);
-
-  //if (!valid) System.out.println("Area out of range : " + area);
-  
-  System.out.println("Area : " + area);
 
   return valid;
 }
@@ -695,7 +676,7 @@ public static boolean validArea(PVector c1, PVector c2, PVector c3, PVector c4, 
  */
 public static boolean nonFlatQuad(PVector c1, PVector c2, PVector c3, PVector c4) {
 
-  // cos(70deg) ~= 0.3
+  // cos(63deg) ~= 0.45
   float min_cos = 0.45f;
 
   PVector v21= PVector.sub(c1, c2);
@@ -711,7 +692,6 @@ public static boolean nonFlatQuad(PVector c1, PVector c2, PVector c3, PVector c4
   if (cos1 < min_cos && cos2 < min_cos && cos3 < min_cos && cos4 < min_cos)
     return true;
   else {
-    System.out.println("Flat quad");
     return false;
   }
 }
